@@ -37,7 +37,7 @@ const CurrencyConverter = () => {
       <Card className="shadow-sm mb-4">
         <Card.Body>
           <Card.Title className="text-center mb-4">
-            💱 Conversor de Moedas
+            Conversor de Moedas
           </Card.Title>
           
           {state.error && (
@@ -51,7 +51,6 @@ const CurrencyConverter = () => {
             <Form.Group className="mb-4">
               <Form.Label>Valor a converter:</Form.Label>
               <InputGroup hasValidation>
-                <InputGroup.Text>💰</InputGroup.Text>
                 <Form.Control
                   type="number"
                   step="0.01"
@@ -124,7 +123,7 @@ const CurrencyConverter = () => {
                 disabled={state.loading}
                 size="lg"
               >
-                {state.loading ? '🔄 Convertendo...' : '💰 Converter'}
+                {state.loading ? '🔄 Convertendo...' : 'Converter'}
               </Button>
             </div>
           </Form>
