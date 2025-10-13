@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import { convertCurrency } from '../services/api';
-import currencyReducer, { initialState, ACTION_TYPES } from '../reducers/currencyReducer';
+import { convertCurrency } from './api';
+import currencyReducer, { initialState, ACTION_TYPES } from './currencyReducer';
 
 
 // Context
