@@ -1,52 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Form, 
-  Button, 
-  Row, 
-  Col, 
-  InputGroup,
-  Card,
-  Alert
-} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Form, Button, Row, Col, InputGroup, Card, Alert } from 'react-bootstrap';
 import { useCurrency } from '../contexts/CurrencyContext';
 
 const CurrencyConverter = () => {
   const { state, actions } = useCurrency();
   const [localErrors, setLocalErrors] = useState({});
 
-  // Limpar erros quando o usuário começar a digitar
-  useEffect(() => {
-    if (state.amount && localErrors.amount) {
-      setLocalErrors({});
-    }
-  }, [state.amount, localErrors.amount]);
-
   const validateForm = () => {
     const errors = {};
-
     if (!state.amount || state.amount.trim() === '') {
       errors.amount = 'Campo obrigatório';
     } else if (isNaN(state.amount) || parseFloat(state.amount) <= 0) {
       errors.amount = 'Valor deve ser um número maior que 0';
     }
-
     setLocalErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     if (validateForm()) {
       actions.performConversion();
-    }
-  };
-
-  const handleAmountChange = (value) => {
-    actions.setAmount(value);
-    // Limpa erro global quando usuário digitar
-    if (state.error) {
-      actions.resetError();
     }
   };
 
@@ -55,10 +29,7 @@ const CurrencyConverter = () => {
     { code: 'BRL', name: 'Real Brasileiro', flag: '🇧🇷' },
     { code: 'EUR', name: 'Euro', flag: '🇪🇺' },
     { code: 'GBP', name: 'Libra Esterlina', flag: '🇬🇧' },
-    { code: 'JPY', name: 'Iene Japonês', flag: '🇯🇵' },
-    { code: 'CAD', name: 'Dólar Canadense', flag: '🇨🇦' },
-    { code: 'AUD', name: 'Dólar Australiano', flag: '🇦🇺' },
-    { code: 'CHF', name: 'Franco Suíço', flag: '🇨🇭' }
+    { code: 'JPY', name: 'Iene Japonês', flag: '🇯🇵' }
   ];
 
   return (
@@ -69,32 +40,24 @@ const CurrencyConverter = () => {
             💱 Conversor de Moedas
           </Card.Title>
           
-          {/* Alert de erro global */}
           {state.error && (
-            <Alert 
-              variant="danger" 
-              dismissible 
-              onClose={actions.resetError}
-              className="mb-4"
-            >
-              <Alert.Heading>⚠️ Erro na Conversão</Alert.Heading>
-              {state.error}
+            <Alert variant="danger" dismissible onClose={actions.resetError}>
+              ⚠️ {state.error}
             </Alert>
           )}
 
           <Form onSubmit={handleSubmit}>
             {/* Campo Valor */}
             <Form.Group className="mb-4">
-              <Form.Label className="fw-bold">Valor a converter:</Form.Label>
+              <Form.Label>Valor a converter:</Form.Label>
               <InputGroup hasValidation>
                 <InputGroup.Text>💰</InputGroup.Text>
                 <Form.Control
                   type="number"
                   step="0.01"
-                  min="0.01"
                   placeholder="Ex: 100.00"
                   value={state.amount}
-                  onChange={(e) => handleAmountChange(e.target.value)}
+                  onChange={(e) => actions.setAmount(e.target.value)}
                   isInvalid={!!localErrors.amount}
                   disabled={state.loading}
                 />
@@ -102,16 +65,13 @@ const CurrencyConverter = () => {
                   {localErrors.amount}
                 </Form.Control.Feedback>
               </InputGroup>
-              <Form.Text className="text-muted">
-                Digite o valor que deseja converter
-              </Form.Text>
             </Form.Group>
 
-            {/* Seleção de Moedas */}
             <Row className="mb-4">
+              {/* Moeda de Origem */}
               <Col md={5}>
                 <Form.Group>
-                  <Form.Label className="fw-bold">Moeda de origem:</Form.Label>
+                  <Form.Label>De:</Form.Label>
                   <Form.Select
                     value={state.fromCurrency}
                     onChange={(e) => actions.setFromCurrency(e.target.value)}
@@ -129,10 +89,8 @@ const CurrencyConverter = () => {
               {/* Botão de Trocar */}
               <Col md={2} className="d-flex align-items-end justify-content-center">
                 <Button 
-                  variant="outline-primary" 
+                  variant="outline-secondary" 
                   onClick={actions.swapCurrencies}
-                  className="swap-btn rounded-circle"
-                  title="Trocar moedas"
                   disabled={state.loading}
                 >
                   ⇄
@@ -142,7 +100,7 @@ const CurrencyConverter = () => {
               {/* Moeda de Destino */}
               <Col md={5}>
                 <Form.Group>
-                  <Form.Label className="fw-bold">Moeda de destino:</Form.Label>
+                  <Form.Label>Para:</Form.Label>
                   <Form.Select
                     value={state.toCurrency}
                     onChange={(e) => actions.setToCurrency(e.target.value)}
@@ -165,40 +123,25 @@ const CurrencyConverter = () => {
                 type="submit" 
                 disabled={state.loading}
                 size="lg"
-                className="fw-bold"
               >
-                {state.loading ? (
-                  <>
-                    <span className="spinner-border spinner-border-sm me-2" />
-                    Convertendo...
-                  </>
-                ) : (
-                  '🔄 Converter Moeda'
-                )}
+                {state.loading ? '🔄 Convertendo...' : '💰 Converter'}
               </Button>
             </div>
           </Form>
         </Card.Body>
       </Card>
 
-      {/* Resultado da Conversão */}
+      {/* Resultado */}
       {state.result && (
-        <Card className="border-success shadow-sm">
-          <Card.Body className="text-center py-4">
-            <Card.Title className="text-success mb-3">
-              ✅ Conversão Realizada com Sucesso!
-            </Card.Title>
-            <div className="display-6 fw-bold text-success mb-3">
+        <Card className="border-success">
+          <Card.Body className="text-center">
+            <h4>✅ Conversão Realizada!</h4>
+            <p className="h5 text-success">
               {state.amount} {state.fromCurrency} = {state.result} {state.toCurrency}
-            </div>
+            </p>
             {state.lastUpdate && (
-              <Card.Text className="text-muted">
-                Atualizado em: {state.lastUpdate}
-              </Card.Text>
+              <small className="text-muted">Atualizado: {state.lastUpdate}</small>
             )}
-            <Card.Text className="text-muted small">
-              Dados fornecidos pela Exchange Rate API em tempo real
-            </Card.Text>
           </Card.Body>
         </Card>
       )}
