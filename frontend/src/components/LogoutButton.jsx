@@ -10,16 +10,5 @@ export default function LogoutButton() {
     navigate("/login", { replace: true });
   }
 
-  return (
-    <button 
-      onClick={handleLogout}
-      className="btn btn-danger"
-      style={{
-        padding: "8px 16px",
-        fontWeight: "bold"
-      }}
-    >
-      🚪 Logout
-    </button>
-  );
+  return 
 }

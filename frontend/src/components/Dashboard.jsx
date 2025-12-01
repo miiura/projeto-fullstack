@@ -29,17 +29,17 @@ export default function Dashboard() {
           <Nav className="nav-tabs" activeKey={activeTab} onSelect={(k) => setActiveTab(k)}>
             <Nav.Item>
               <Nav.Link eventKey="converter" className="nav-link-custom">
-                🔄 Conversor
+                Conversor
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="sugerir" className="nav-link-custom">
-                💡 Sugerir Moeda
+                Sugerir Moeda
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="mural" className="nav-link-custom">
-                📝 Mural de Sugestões
+                Mural de Sugestões
               </Nav.Link>
             </Nav.Item>
           </Nav>

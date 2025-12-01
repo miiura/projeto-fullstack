@@ -36,7 +36,7 @@ export default function Mural() {
         onChange={e => setQ(e.target.value)} 
       />
 
-      <button onClick={buscar}>Buscar</button>
+      <button onClick={buscar} class="btn btn-primary btn-lg">Buscar</button>
 
       <ul>
         {lista.map(s => (

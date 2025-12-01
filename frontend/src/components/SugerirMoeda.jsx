@@ -42,7 +42,7 @@ export default function SugerirMoeda() {
         onChange={e => setPais(e.target.value)} 
       />
 
-      <button onClick={enviar}>Enviar sugestão</button>
+      <button onClick={enviar} class="btn btn-primary btn-lg">Enviar sugestão</button>
 
       <p>{msg}</p>
     </div>

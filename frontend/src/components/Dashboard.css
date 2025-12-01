@@ -87,17 +87,6 @@
   color: #9ca3af;
 }
 
-.tab-content button {
-  background: linear-gradient(90deg,#667eea,#764ba2);
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(118,75,162,0.12);
-}
-
 .tab-content button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
