@@ -57,6 +57,9 @@ module.exports = (cache, authMiddleware) => {
   router.post('/save', authMiddleware, async (req, res) => {
     try {
       const { from, to, amount, rate, converted } = req.body;
+      const userId = req.user.id;
+
+      winston.info(`[CONVERSÃO] POST - Usuário: ${userId}, ${from} → ${to}, Valor: ${amount}`);
 
       if (!from || !to || !amount || !rate || !converted) {
         return res.status(400).json({ message: 'Dados incompletos' });
@@ -65,7 +68,7 @@ module.exports = (cache, authMiddleware) => {
       const Conversion = require('../models/Conversion');
 
       const saved = await Conversion.create({
-        userId: req.user.id,
+        userId,
         from,
         to,
         amount,
@@ -73,10 +76,11 @@ module.exports = (cache, authMiddleware) => {
         converted
       });
 
+      winston.info(`[CONVERSÃO] ✅ Salva com sucesso - ID: ${saved._id}`);
       return res.status(201).json(saved);
 
     } catch (err) {
-      winston.error('Erro ao salvar conversão', err);
+      winston.error(`[CONVERSÃO] ❌ Erro ao salvar: ${err.message}`, err);
       return res.status(500).json({ message: 'Erro interno' });
     }
   });
@@ -84,15 +88,19 @@ module.exports = (cache, authMiddleware) => {
     // ROTA PROTEGIDA - HISTÓRICO DO USUÁRIO
   router.get('/history', authMiddleware, async (req, res) => {
     try {
+      const userId = req.user.id;
+      winston.info(`[CONVERSÃO] GET /history - Usuário: ${userId}`);
+
       const Conversion = require('../models/Conversion');
 
-      const history = await Conversion.find({ userId: req.user.id })
+      const history = await Conversion.find({ userId })
         .sort({ createdAt: -1 }); // mais recentes primeiro
 
+      winston.info(`[CONVERSÃO] ✅ ${history.length} conversões no histórico`);
       return res.json(history);
 
     } catch (err) {
-      winston.error('Erro ao buscar histórico', err);
+      winston.error(`[CONVERSÃO] ❌ Erro ao buscar histórico: ${err.message}`, err);
       return res.status(500).json({ message: 'Erro interno' });
     }
   });

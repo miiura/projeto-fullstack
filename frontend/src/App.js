@@ -1,62 +1,66 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
 import { CurrencyProvider } from './contexts/CurrencyContext';
-import CurrencyConverter from './components/CurrencyConverter';
-import CurrencyInfo from './components/CurrencyInfo';
-
-import Login from './components/Login'; 
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 // Componente de rota protegida
 const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
-  return token ? children : <Navigate to="/login" replace />;
-};
+  const { isAuthenticated, loading } = useAuth();
 
+  if (loading) {
+    return <div className="text-center py-5">Carregando...</div>;
+  }
 
-// Conteúdo principal (Home)
-const AppContent = () => {
-  return (
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col md={8}>
-          <h1 className="text-center mb-4">💱 Conversor de Moedas</h1>
-          <p className="text-center text-muted mb-5">
-            Converta moedas usando React useReducer + Context API
-          </p>
-
-          <CurrencyConverter />
-          <CurrencyInfo />
-        </Col>
-      </Row>
-    </Container>
-  );
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 // APP PRINCIPAL COM ROTAS
+function AppRoutes() {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <div className="text-center py-5">Carregando...</div>;
+  }
+
+  return (
+    <Routes>
+      {/* Redirecionar raiz baseado em autenticação */}
+      <Route 
+        path="/" 
+        element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />} 
+      />
+
+      {/* Página de Login */}
+      <Route path="/login" element={<Login />} />
+
+      {/* Dashboard protegido com todas as funcionalidades */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Rota não encontrada */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
 function App() {
   return (
-    <CurrencyProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Página de Login */}
-          <Route path="/login" element={<Login />} />
-
-          {/* Página principal protegida */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <AppContent />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </CurrencyProvider>
+    <AuthProvider>
+      <CurrencyProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </CurrencyProvider>
+    </AuthProvider>
   );
 }
 

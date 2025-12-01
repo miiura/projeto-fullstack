@@ -62,6 +62,10 @@ const createApp = async ({
   const currencyRoutesFactory = require('./src/routes/currency.routes');
   app.use('/api/currency', currencyRoutesFactory(cache, authMiddleware));
 
+  const suggestionsRoutesFactory = require('./src/routes/suggestions');
+  app.use('/api/suggestions', suggestionsRoutesFactory(authMiddleware));
+
+  
   // Healthcheck
   app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
