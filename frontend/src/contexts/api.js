@@ -50,3 +50,12 @@ export const convertBackend = async (from, to, amount) => {
 export const getHistory = async () => {
   return api.get("/currency/history");
 };
+
+// sugestões
+export const sendSuggestion = async (moeda, pais) => {
+  return api.post("/suggestions", { moeda, pais });
+};
+
+export const searchSuggestions = async (q = "") => {
+  return api.get("/suggestions", { params: { q } });
+};

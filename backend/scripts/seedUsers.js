@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: '.env' });
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('../src/models/User');
@@ -8,8 +8,8 @@ const run = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
     const users = [
-      { username: 'fabricio', email: 'fabricio@example.com', password: 'SenhaSegura1!' },
-      { username: 'leda', email: 'leda@example.com', password: 'SenhaSegura2!' }
+      { username: 'fabricio', email: 'fabricio@example.com', password: 'SenhaSegura1' },
+      { username: 'leda', email: 'leda@example.com', password: 'SenhaSegura2' }
     ];
 
     for (const u of users) {

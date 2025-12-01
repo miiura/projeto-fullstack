@@ -1,0 +1,86 @@
+/* Dashboard Styles */
+
+.dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding-top: 2rem;
+}
+
+.dashboard-container h1 {
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Abas customizadas */
+.nav-tabs {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  gap: 1rem;
+}
+
+.nav-link-custom {
+  color: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.nav-link-custom:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+}
+
+.nav-link-custom.active {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #667eea !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Conteúdo das abas */
+.tab-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-content p {
+  color: #666 !important;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .nav-tabs {
+    flex-direction: column;
+  }
+
+  .nav-link-custom {
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .tab-content {
+    padding: 1.5rem;
+  }
+}
