@@ -9,3 +9,5 @@ API JSON: exchange API -- https://www.exchangerate-api.com
 
 
 LINK PARA O GITHUB PAGES: https://miiura.github.io/projeto-fullstack/
+
+LINK PARA O VÍDEO CURTO EXPLICATIVO: https://drive.google.com/drive/folders/1XZzQ2SUsTJ87YMbFxFCtqiVaOEWB3Euv?usp=drive_link
